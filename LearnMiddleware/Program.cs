@@ -12,13 +12,27 @@ var app = builder.Build();
 //Middleware1
 app.Use(async (HttpContext context, RequestDelegate next) =>
 {
-    await context.Response.WriteAsync("Hello");
+    await context.Response.WriteAsync("Hello 1");
+    await next(context);
 });
 
 //Middleware2
+app.Use(async (context, next) =>
+{
+    await context.Response.WriteAsync("Hello 2");
+    await next(context);
+});
+
+app.Use(async (HttpContext context, RequestDelegate next) =>
+{
+    await context.Response.WriteAsync("Hello 2");
+    //await next(context);
+});
+
+//Middleware3 
 app.Run(async (HttpContext context) =>
 {
-    await context.Response.WriteAsync("Hello 1");
+    await context.Response.WriteAsync("Hello 3");
 });
 
 // Configure the HTTP request pipeline.
